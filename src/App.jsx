@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import './App.css';
+import './App.css'
 import AQITable from './AQITable'
 import Header from './Header'
 import LocationButton from './LocationButton'
 import ResetButton from './ResetButton'
 import { capitalizeFirstLetter, getColor } from './utils'
-import { Box, FormControlLabel, Stack, Switch, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { Box, FormControlLabel, Paper, Stack, Switch, Typography, useMediaQuery, useTheme } from '@mui/material'
 
 
 function App() {
@@ -88,6 +88,22 @@ function App() {
     }
   }, [initialLoad, resetTriggered])
 
+  const formatISOTime = (isoTime) => {
+    const options = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      timeZoneName: 'short',
+    }
+
+    const formattedTime = new Intl.DateTimeFormat('en-US', options).format(new Date(isoTime))
+    return formattedTime
+  }
+
   return (
     <div className="App">
       <Header />
@@ -99,21 +115,36 @@ function App() {
           justifyContent="center"
           px={2}
         >
-        {loading || !lastSelectedCity ? (
-        <p>Loading...</p>
-        ) : (
-          <>
-            {console.log(lastSelectedCity)}
-            {console.log(cities)}
-            <h2>{capitalizeFirstLetter(lastSelectedCity)}</h2>
-            {
-              <>
-                <h3>{cities[lastSelectedCity].data ? cities[lastSelectedCity].data.aqi : null}</h3>
-                <h3>{cities[lastSelectedCity].level ? cities[lastSelectedCity].level : null}</h3>
-              </>
-            }
-          </>
-        )}
+        <Paper 
+          sx={{ 
+            margin: '1rem',
+            minHeight: 200,
+            minWidth: 375,
+            padding: '1rem'
+          }}
+          variant="elevation"
+        >
+          {loading || !lastSelectedCity ? (
+          <p>Loading...</p>
+          ) : (
+            <>
+              {console.log(cities)}
+              {cities[lastSelectedCity].data && (
+                <>
+                  {lastSelectedCity === 'user location' ? (
+                    <Typography component="h2" variant="h4">{cities[lastSelectedCity].data.city.name}</Typography>
+                  ) : (
+                    <Typography component="h2" variant="h4">{capitalizeFirstLetter(lastSelectedCity)}</Typography>                    
+                  )}
+                  <Typography component="h3" variant="h5">{formatISOTime(cities[lastSelectedCity].data.time.iso)}</Typography>
+                  <Typography component="h3" variant="h5">{cities[lastSelectedCity].data.aqi}</Typography>
+                  <Typography component="h3" variant="h5">{cities[lastSelectedCity].level}</Typography>
+                </>
+              
+              )}
+            </>
+          )}
+        </Paper>
         <Stack direction={isMobile ? 'column' : 'row'} spacing={2}>
           {['user location', 'tokyo', 'budapest', 'perth'].map((city) => (
             <LocationButton

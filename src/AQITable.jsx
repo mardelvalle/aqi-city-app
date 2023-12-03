@@ -3,7 +3,7 @@ import { Link, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
 function AQITable() {  
   return(   
     <>  
-      <TableContainer component={Paper} style={{ padding: '0 0.25rem', border: '1px solid #ddd' }}>
+      <TableContainer component={Paper} style={{ padding: '0 0.5rem', border: '1px solid #ddd' }}>
         <Table>
           <TableHead>
             <TableRow>

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import aqicn from './aqicn.png';
 import './App.css';
 import AQITable from './AQITable'
+import Header from './Header'
+import LocationButton from './LocationButton'
+import ResetButton from './ResetButton'
 import { capitalizeFirstLetter, getColor } from './utils'
-import { Box, Button, FormControlLabel, Stack, Switch, Typography, useMediaQuery, useTheme } from '@mui/material'
-import RefreshIcon from '@mui/icons-material/Refresh';
+import { Box, FormControlLabel, Stack, Switch, Typography, useMediaQuery, useTheme } from '@mui/material'
 
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
   const [showAQITable, setAQITable] = useState(false)
   const config = require('./config')
   const apiToken = config.apiToken
-  const theme = useTheme();
+  const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
   const fetchData = async (city) => {
@@ -44,6 +45,7 @@ function App() {
 
     } else if (!cities[city].data) {
       try {
+        setLastSelectedCity(city)
         setLoading(true)
         const response = await fetch(`https://api.waqi.info/feed/${city}/?token=${apiToken}`)
         const data = await response.json()
@@ -53,11 +55,9 @@ function App() {
           ...prevState,
           [city]: { data: data.data, color, level }
         }))
-        console.log(city)
       } catch (error) {
         console.error('Error fetching data:', error)
       } finally {
-        setLastSelectedCity(city)
         setLoading(false)
       }
     } else if (cities[city].data) {
@@ -88,24 +88,9 @@ function App() {
     }
   }, [initialLoad, resetTriggered])
 
-  const resetCities = async () => {
-    console.log('fries')
-    Object.keys(cities).forEach((city) => {
-      setCities((prevState) => ({
-        ...prevState,
-        [city]: {},
-      }))
-    })
-
-    setResetTriggered(true)
-  }
-
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={aqicn} className="App-logo" alt="logo" />
-        <h1>AQI Location Viewer</h1>
-      </header>
+      <Header />
       <Box
           display="flex"
           alignItems="center"
@@ -130,22 +115,22 @@ function App() {
           </>
         )}
         <Stack direction={isMobile ? 'column' : 'row'} spacing={2}>
-          <Button onClick={() => fetchData('user location')} sx={{ fontSize: isMobile ? '1.5rem' : 'inherit', padding: isMobile ? '0.75rem 7.5rem' : '0.5rem' }} variant="contained">
-            My Location
-          </Button>
-          <Button onClick={() => fetchData('tokyo')} sx={{ fontSize: isMobile ? '1.5rem' : 'inherit', padding: isMobile ? '0.75rem 7.5rem' : '0.5rem' }} variant="contained">
-            Tokyo
-          </Button>
-          <Button onClick={() => fetchData('budapest')} sx={{ fontSize: isMobile ? '1.5rem' : 'inherit', padding: isMobile ? '0.75rem 7.5rem' : '0.5rem' }} variant="contained">
-            Budapest
-          </Button>
-          <Button onClick={() => fetchData('perth')} sx={{ fontSize: isMobile ? '1.5rem' : 'inherit', padding: isMobile ? '0.75rem 7.5rem' : '0.5rem' }} variant="contained">
-            Perth
-          </Button>
-          <Button onClick={() => resetCities()} sx={{ fontSize: isMobile ? '1.5rem' : 'inherit', padding: isMobile ? '0.75rem 7.5rem' : '0.5rem' }} variant="contained">
-            Reload
-            <RefreshIcon style={{ marginRight: 4 }} />
-          </Button>
+          {['user location', 'tokyo', 'budapest', 'perth'].map((city) => (
+            <LocationButton
+              capitalizeFirstLetter={capitalizeFirstLetter}
+              city={city}
+              fetchData={fetchData}
+              isMobile={isMobile}
+              lastSelectedCity={lastSelectedCity}
+              theme={theme}
+            />
+          ))}
+          <ResetButton 
+            cities={cities} 
+            isMobile={isMobile} 
+            setCities={setCities} 
+            setResetTriggered={setResetTriggered}
+          />
         </Stack>
         <FormControlLabel
           control={<Switch checked={showAQITable} onChange={handleToggle} />}

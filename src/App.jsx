@@ -1,25 +1,28 @@
 import React, { useEffect, useState } from 'react'
-import logo from './logo.svg';
+import aqicn from './aqicn.png';
 import './App.css';
+import AQITable from './AQITable'
 import { capitalizeFirstLetter, getColor } from './utils'
-import { Button } from '@mui/material'
+import { Box, Button, FormControlLabel, Stack, Switch, Typography, useMediaQuery, useTheme } from '@mui/material'
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 
 function App() {
-  const [loading, setLoading] = useState(true)
-  const [lastSelectedCity, setLastSelectedCity] = useState('user location')
   const [cities, setCities] = useState({
     tokyo: {},
     perth: {},
     budapest: {},
     'user location': {}
   })
+  const [loading, setLoading] = useState(true)
+  const [lastSelectedCity, setLastSelectedCity] = useState('user location')
   const [initialLoad, setInitialLoad] = useState(true)
   const [resetTriggered, setResetTriggered] = useState(false)
+  const [showAQITable, setAQITable] = useState(false)
   const config = require('./config')
   const apiToken = config.apiToken
-
-
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
   const fetchData = async (city) => {
     if (!cities[city].data && city === 'user location') {
@@ -62,6 +65,10 @@ function App() {
     }
   }
 
+  const handleToggle = (event) => {
+    setAQITable(event.target.checked)
+  }
+
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
@@ -96,11 +103,19 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <img src={aqicn} className="App-logo" alt="logo" />
         <h1>AQI Location Viewer</h1>
-        {console.log(!lastSelectedCity)}
+      </header>
+      <Box
+          display="flex"
+          alignItems="center"
+          component="section"
+          flexDirection="column" 
+          justifyContent="center"
+          px={2}
+        >
         {loading || !lastSelectedCity ? (
-          <p>Loading...</p>
+        <p>Loading...</p>
         ) : (
           <>
             {console.log(lastSelectedCity)}
@@ -114,27 +129,32 @@ function App() {
             }
           </>
         )}
-        <h1 className="text-3xl font-bold underline">
-          Hello world!
-        </h1>
-        <div className="flex flex-col sm:flex-row">
-          <Button onClick={() => fetchData('user location')} variant="contained" className="mb-2 sm:mr-2 sm:mb-0">
+        <Stack direction={isMobile ? 'column' : 'row'} spacing={2}>
+          <Button onClick={() => fetchData('user location')} sx={{ fontSize: isMobile ? '1.5rem' : 'inherit', padding: isMobile ? '0.75rem 7.5rem' : '0.5rem' }} variant="contained">
             My Location
           </Button>
-          <Button onClick={() => fetchData('tokyo')} variant="contained" className="mb-2 sm:mr-2 sm:mb-0">
+          <Button onClick={() => fetchData('tokyo')} sx={{ fontSize: isMobile ? '1.5rem' : 'inherit', padding: isMobile ? '0.75rem 7.5rem' : '0.5rem' }} variant="contained">
             Tokyo
           </Button>
-          <Button onClick={() => fetchData('budapest')} variant="contained" className="mb-2 sm:mr-2 sm:mb-0">
+          <Button onClick={() => fetchData('budapest')} sx={{ fontSize: isMobile ? '1.5rem' : 'inherit', padding: isMobile ? '0.75rem 7.5rem' : '0.5rem' }} variant="contained">
             Budapest
           </Button>
-          <Button onClick={() => fetchData('perth')} variant="contained" className="mb-2 sm:mr-2 sm:mb-0">
+          <Button onClick={() => fetchData('perth')} sx={{ fontSize: isMobile ? '1.5rem' : 'inherit', padding: isMobile ? '0.75rem 7.5rem' : '0.5rem' }} variant="contained">
             Perth
           </Button>
-          <Button onClick={() => resetCities()} variant="contained" className="mb-2 sm:mb-0">
+          <Button onClick={() => resetCities()} sx={{ fontSize: isMobile ? '1.5rem' : 'inherit', padding: isMobile ? '0.75rem 7.5rem' : '0.5rem' }} variant="contained">
             Reload
+            <RefreshIcon style={{ marginRight: 4 }} />
           </Button>
-        </div>
-      </header>
+        </Stack>
+        <FormControlLabel
+          control={<Switch checked={showAQITable} onChange={handleToggle} />}
+          label={<Typography variant="body2">Air Quality Index (AQI) Scale and Color Legend</Typography>}
+        />
+      </Box>
+      {showAQITable && (
+        <AQITable/>
+      )}
     </div>
   )
 }

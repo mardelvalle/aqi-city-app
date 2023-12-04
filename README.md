@@ -35,7 +35,7 @@ Run to end to end tests.
 
 ### `npx cypress open --e2e`
 
-Opens a GUI way to run Cypress tests. You will be prompted to choose a browser to run the tests for and then given a list of Cypress test files (in this case only one) to run. As soon as you click on the file the tests will run.
+Opens a GUI way to run Cypress tests. You will be prompted to choose a browser to run the tests for and then given a list of Cypress test files (in this case only one called `aqi-app.cy.js`) to run. As soon as you click on the file the tests will run.
 
 ## Learn More
 

@@ -31,11 +31,16 @@ function App() {
       const apiUrl = city === 'user location'
       ? `https://api.waqi.info/feed/here/?token=${apiToken}`
       : `https://api.waqi.info/feed/${city}/?token=${apiToken}`
-      
+
       setLastSelectedCity(city)
       setLoading(true)
       try {
         const response = await fetch(apiUrl)
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`)
+        }
+
         const data = await response.json()
         const { color, level } = getColor(data.data.aqi)
         setCities(prevState => ({

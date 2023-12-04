@@ -19,7 +19,7 @@ function CityDetails({cities, lastSelectedCity, loading}) {
       variant="elevation"
     >
       {loading || !lastSelectedCity ? (
-      <Typography variant="body1">Loading...</Typography>
+        <Typography variant="body1">Loading...</Typography>
       ) : (
         <>
           {cities[lastSelectedCity].data && (

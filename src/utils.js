@@ -2,6 +2,22 @@ export const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
+export const formatISOTime = (isoTime) => {
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    timeZoneName: 'short',
+  }
+  const formattedTime = new Intl.DateTimeFormat('en-US', options).format(new Date(isoTime))
+  
+  return formattedTime
+}
+
 export const getColor = (number) => {
     if (number >= 0 && number <= 50) {
         return { aqi: number, color: 'green', level: 'Good' }

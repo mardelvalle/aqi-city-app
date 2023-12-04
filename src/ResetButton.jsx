@@ -21,8 +21,8 @@ function ResetButton({cities, isMobile, setCities, setResetTriggered}) {
       onClick={() => resetCities(setCities, setResetTriggered)} 
       sx={{ 
         backgroundColor: 'inherit', 
-        fontSize: isMobile ? '1.5rem' : 'inherit', 
-        padding: isMobile ? '0.75rem 7.5rem' : '0.5rem', 
+        fontSize: isMobile ? '1.25rem' : 'inherit', 
+        padding: isMobile ? '0.75rem 8.5rem' : '0.5rem', 
         color: 'inherit',
         '&:hover': {
           color: 'white',

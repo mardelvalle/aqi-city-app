@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import './App.css'
 import AQITable from './AQITable'
+import CityDetails from './CityDetails'
 import Header from './Header'
 import LocationButton from './LocationButton'
 import ResetButton from './ResetButton'
 import { capitalizeFirstLetter, getColor } from './utils'
-import { Box, FormControlLabel, Paper, Stack, Switch, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { Box, FormControlLabel, Stack, Switch, Typography, useMediaQuery, useTheme } from '@mui/material'
 
 
 function App() {
@@ -26,30 +27,12 @@ function App() {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
   const fetchData = async (city) => {
-    if (!cities[city].data && city === 'user location') {
+    if (!cities[city].data) {
+      setLastSelectedCity(city)
       setLoading(true)
       try {
-        const response = await fetch(`https://api.waqi.info/feed/here/?token=${apiToken}`)
+        const response = city === 'user location' ? await fetch(`https://api.waqi.info/feed/here/?token=${apiToken}`) : await fetch(`https://api.waqi.info/feed/${city}/?token=${apiToken}`)
         const data = await response.json()
-        const { color, level } = getColor(data.data.aqi)
-        setCities(prevState => ({
-          ...prevState,
-          [city]: { data: data.data, color, level }
-        }))
-      } catch (error) {
-        console.error('Error fetching data:', error)
-      } finally {
-        setLastSelectedCity(city)
-        setLoading(false)
-      }
-
-    } else if (!cities[city].data) {
-      try {
-        setLastSelectedCity(city)
-        setLoading(true)
-        const response = await fetch(`https://api.waqi.info/feed/${city}/?token=${apiToken}`)
-        const data = await response.json()
-
         const { color, level } = getColor(data.data.aqi)
         setCities(prevState => ({
           ...prevState,
@@ -70,6 +53,7 @@ function App() {
   }
 
   useEffect(() => {
+    console.log('asdf')
     const fetchInitialData = async () => {
       try {
         setLoading(true)
@@ -88,63 +72,18 @@ function App() {
     }
   }, [initialLoad, resetTriggered])
 
-  const formatISOTime = (isoTime) => {
-    const options = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      timeZoneName: 'short',
-    }
-
-    const formattedTime = new Intl.DateTimeFormat('en-US', options).format(new Date(isoTime))
-    return formattedTime
-  }
-
   return (
     <div className="App">
       <Header />
       <Box
-          display="flex"
-          alignItems="center"
-          component="section"
-          flexDirection="column" 
-          justifyContent="center"
-          px={2}
-        >
-        <Paper 
-          sx={{ 
-            margin: '1rem',
-            minHeight: 200,
-            minWidth: 375,
-            padding: '1rem'
-          }}
-          variant="elevation"
-        >
-          {loading || !lastSelectedCity ? (
-          <p>Loading...</p>
-          ) : (
-            <>
-              {console.log(cities)}
-              {cities[lastSelectedCity].data && (
-                <>
-                  {lastSelectedCity === 'user location' ? (
-                    <Typography component="h2" variant="h4">{cities[lastSelectedCity].data.city.name}</Typography>
-                  ) : (
-                    <Typography component="h2" variant="h4">{capitalizeFirstLetter(lastSelectedCity)}</Typography>                    
-                  )}
-                  <Typography component="h3" variant="h5">{formatISOTime(cities[lastSelectedCity].data.time.iso)}</Typography>
-                  <Typography component="h3" variant="h5">{cities[lastSelectedCity].data.aqi}</Typography>
-                  <Typography component="h3" variant="h5">{cities[lastSelectedCity].level}</Typography>
-                </>
-              
-              )}
-            </>
-          )}
-        </Paper>
+        display="flex"
+        alignItems="center"
+        component="section"
+        flexDirection="column" 
+        justifyContent="center"
+        px={2}
+      >
+        <CityDetails capitalizeFirstLetter={capitalizeFirstLetter} cities={cities} lastSelectedCity={lastSelectedCity} loading={loading}/>
         <Stack direction={isMobile ? 'column' : 'row'} spacing={2}>
           {['user location', 'tokyo', 'budapest', 'perth'].map((city) => (
             <LocationButton
@@ -153,6 +92,7 @@ function App() {
               fetchData={fetchData}
               isMobile={isMobile}
               lastSelectedCity={lastSelectedCity}
+              key={city}
               theme={theme}
             />
           ))}
@@ -167,10 +107,10 @@ function App() {
           control={<Switch checked={showAQITable} onChange={handleToggle} />}
           label={<Typography variant="body2">Air Quality Index (AQI) Scale and Color Legend</Typography>}
         />
+        {showAQITable && (
+          <AQITable/>
+        )}
       </Box>
-      {showAQITable && (
-        <AQITable/>
-      )}
     </div>
   )
 }

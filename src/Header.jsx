@@ -1,8 +1,6 @@
 import React from 'react'
-import aqicn from './aqicn.png'
 import { Typography } from '@mui/material'
-
-
+import aqicn from './aqicn.png'
 
 function Header() {
 

@@ -2,10 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import CircleIcon from '@mui/icons-material/Circle'
 import { Box, Paper, Typography } from '@mui/material'
+import { capitalizeFirstLetter } from './utils'
 import { formatISOTime } from './utils'
 
 
-function CityDetails({capitalizeFirstLetter, cities, lastSelectedCity, loading}) {
+function CityDetails({cities, lastSelectedCity, loading}) {
 
   return (
     <Paper 
@@ -53,6 +54,12 @@ function CityDetails({capitalizeFirstLetter, cities, lastSelectedCity, loading})
       )}
     </Paper>
   )
+}
+
+CityDetails.propTypes = {
+  cities: PropTypes.object.isRequired,
+  lastSelectedCity: PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired,
 }
 
 export default CityDetails

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import './App.css'
+import { Box, FormControlLabel, Stack, Switch, Typography, useMediaQuery, useTheme } from '@mui/material'
 import AQITable from './AQITable'
 import CityDetails from './CityDetails'
 import Header from './Header'
 import LocationButton from './LocationButton'
 import ResetButton from './ResetButton'
-import { capitalizeFirstLetter, getColor } from './utils'
-import { Box, FormControlLabel, Stack, Switch, Typography, useMediaQuery, useTheme } from '@mui/material'
+import { getColor } from './utils'
 
 
 function App() {
@@ -21,6 +20,7 @@ function App() {
   const [initialLoad, setInitialLoad] = useState(true)
   const [resetTriggered, setResetTriggered] = useState(false)
   const [showAQITable, setAQITable] = useState(false)
+
   const config = require('./config')
   const apiToken = config.apiToken
   const theme = useTheme()
@@ -28,10 +28,14 @@ function App() {
 
   const fetchData = async (city) => {
     if (!cities[city].data) {
+      const apiUrl = city === 'user location'
+      ? `https://api.waqi.info/feed/here/?token=${apiToken}`
+      : `https://api.waqi.info/feed/${city}/?token=${apiToken}`
+      
       setLastSelectedCity(city)
       setLoading(true)
       try {
-        const response = city === 'user location' ? await fetch(`https://api.waqi.info/feed/here/?token=${apiToken}`) : await fetch(`https://api.waqi.info/feed/${city}/?token=${apiToken}`)
+        const response = await fetch(apiUrl)
         const data = await response.json()
         const { color, level } = getColor(data.data.aqi)
         setCities(prevState => ({
@@ -53,7 +57,6 @@ function App() {
   }
 
   useEffect(() => {
-    console.log('asdf')
     const fetchInitialData = async () => {
       try {
         setLoading(true)
@@ -83,11 +86,10 @@ function App() {
         justifyContent="center"
         px={2}
       >
-        <CityDetails capitalizeFirstLetter={capitalizeFirstLetter} cities={cities} lastSelectedCity={lastSelectedCity} loading={loading}/>
+        <CityDetails cities={cities} lastSelectedCity={lastSelectedCity} loading={loading}/>
         <Stack direction={isMobile ? 'column' : 'row'} spacing={2}>
           {['user location', 'tokyo', 'budapest', 'perth'].map((city) => (
             <LocationButton
-              capitalizeFirstLetter={capitalizeFirstLetter}
               city={city}
               fetchData={fetchData}
               isMobile={isMobile}
@@ -99,7 +101,7 @@ function App() {
           <ResetButton 
             cities={cities} 
             isMobile={isMobile} 
-            setCities={setCities} 
+            setCities={setCities}
             setResetTriggered={setResetTriggered}
           />
         </Stack>

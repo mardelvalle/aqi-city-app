@@ -1,11 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Button } from '@mui/material'
 import RefreshIcon from '@mui/icons-material/Refresh';
 
 
 function ResetButton({cities, isMobile, setCities, setResetTriggered}) {
-
   const resetCities = async () => {
+
     Object.keys(cities).forEach((city) => {
       setCities((prevState) => ({
         ...prevState,
@@ -18,7 +19,7 @@ function ResetButton({cities, isMobile, setCities, setResetTriggered}) {
 
   return (
     <Button 
-      onClick={() => resetCities(setCities, setResetTriggered)} 
+      onClick={() => resetCities()} 
       sx={{ 
         backgroundColor: 'inherit', 
         fontSize: isMobile ? '1.25rem' : 'inherit', 
@@ -34,6 +35,13 @@ function ResetButton({cities, isMobile, setCities, setResetTriggered}) {
       <RefreshIcon style={{ marginRight: 4 }} />
     </Button>
   )
+}
+
+ResetButton.propTypes = {
+  cities: PropTypes.object.isRequired,
+  isMobile: PropTypes.bool.isRequired,
+  setCities: PropTypes.func.isRequired,
+  setResetTriggered: PropTypes.func.isRequired,
 }
 
 export default ResetButton

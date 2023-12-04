@@ -6,7 +6,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 1. Use `git clone` to copy the project locally
 2. Go in the console to the root of this project and run `npm install`
-3. Create a file called `config.js`
+3. Create a file called `config.js` inside the folder called `src`
 4. In your `config.js` add the following code and insert your api token:
 ```
 module.exports = {

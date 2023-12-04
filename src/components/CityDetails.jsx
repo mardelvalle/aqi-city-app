@@ -8,6 +8,8 @@ import { formatISOTime } from '../utils'
 
 function CityDetails({cities, lastSelectedCity, loading}) {
 
+  const cityName = () => lastSelectedCity === 'user location' ? cities[lastSelectedCity].data.city.name : capitalizeFirstLetter(lastSelectedCity)
+
   return (
     <Paper
       data-testid="city-details" 
@@ -20,16 +22,12 @@ function CityDetails({cities, lastSelectedCity, loading}) {
       variant="elevation"
     >
       {loading || !lastSelectedCity ? (
-        <Typography data-testid="loading" variant="body1">Loading...</Typography>
+        <Typography data-testid="loading" variant="body1">Loading</Typography>
       ) : (
         <>
           {cities[lastSelectedCity].data && (
             <>
-              {lastSelectedCity === 'user location' ? (
-                <Typography component="h2" variant="h4">{cities[lastSelectedCity].data.city.name}</Typography>
-              ) : (
-                <Typography component="h2" variant="h4">{capitalizeFirstLetter(lastSelectedCity)}</Typography>                    
-              )}
+              <Typography component="h2" data-testid="city-name" variant="h4">{cityName()}</Typography>                    
               <Box sx={{ marginY: '1rem' }}>
                 <Typography 
                   component="h3" 
@@ -43,7 +41,7 @@ function CityDetails({cities, lastSelectedCity, loading}) {
                   {`AQI - ${cities[lastSelectedCity].data.aqi}`}
                   <CircleIcon 
                     aria-label={`Air Pollution Color Code: ${cities[lastSelectedCity].color}`} 
-                    sx={{color: cities[lastSelectedCity].color}}
+                    sx={{ color: cities[lastSelectedCity].color }}
                   />
                 </Typography>
                 <Typography component="h3" variant="h5">{`Air Pollution Level - ${cities[lastSelectedCity].level}`}</Typography>

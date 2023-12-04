@@ -55,7 +55,7 @@ function AQITable() {
       </TableContainer>
       <span>
         Source: 
-        <Link href="https://aqicn.org/scale/">aqicn.org</Link>
+        <Link data-testid="aqin-link" href="https://aqicn.org/scale/">aqicn.org</Link>
       </span>
     </>
   )

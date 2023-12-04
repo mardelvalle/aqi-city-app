@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Box, FormControlLabel, Stack, Switch, Typography, useMediaQuery, useTheme } from '@mui/material'
 import AQITable from './AQITable'
 import CityDetails from './CityDetails'
@@ -13,10 +13,10 @@ function App() {
     tokyo: {},
     perth: {},
     budapest: {},
-    'user location': {}
+    'my location': {}
   })
   const [loading, setLoading] = useState(true)
-  const [lastSelectedCity, setLastSelectedCity] = useState('user location')
+  const [lastSelectedCity, setLastSelectedCity] = useState('my location')
   const [initialLoad, setInitialLoad] = useState(true)
   const [resetTriggered, setResetTriggered] = useState(false)
   const [showAQITable, setAQITable] = useState(false)
@@ -26,10 +26,9 @@ function App() {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
-  const fetchData = async (city) => {
-    console.log(cities)
+  const fetchData = useCallback(async (city) => {
     if (!cities[city].data) {
-      const apiUrl = city === 'user location'
+      const apiUrl = city === 'my location'
       ? `https://api.waqi.info/feed/here/?token=${apiToken}`
       : `https://api.waqi.info/feed/${city}/?token=${apiToken}`
 
@@ -56,7 +55,7 @@ function App() {
     } else if (cities[city].data) {
       setLastSelectedCity(city)
     }
-  }
+  }, [apiToken, cities, setCities, setLoading, setLastSelectedCity])
 
   const handleToggle = (event) => {
     setAQITable(event.target.checked)
@@ -79,7 +78,7 @@ function App() {
       setInitialLoad(false)
       setResetTriggered(false)
     }
-  }, [initialLoad, resetTriggered])
+  }, [fetchData, initialLoad, resetTriggered, lastSelectedCity])
 
   return (
     <div className="App">
@@ -94,7 +93,7 @@ function App() {
       >
         <CityDetails cities={cities} lastSelectedCity={lastSelectedCity} loading={loading}/>
         <Stack direction={isMobile ? 'column' : 'row'} spacing={2}>
-          {['user location', 'tokyo', 'budapest', 'perth'].map((city) => (
+          {['my location', 'tokyo', 'budapest', 'perth'].map((city) => (
             <LocationButton
               city={city}
               fetchData={fetchData}

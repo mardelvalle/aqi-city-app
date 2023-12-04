@@ -20,7 +20,7 @@ describe('formatISOTime function', () => {
   test('formats ISO time correctly', () => {
     const isoTime = '2023-12-01T12:34:56Z'
     const result = formatISOTime(isoTime)
-    expect(result).toBe('Friday, December 1, 2023 at 7:34:56 AM EST')
+    expect(result).toBe('December 1, 2023 at 7:34:56 AM EST')
   })
 
   test('handles an invalid ISO time', () => {

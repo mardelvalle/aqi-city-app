@@ -8,7 +8,7 @@ import { formatISOTime } from '../utils'
 
 function CityDetails({cities, lastSelectedCity, loading}) {
 
-  const cityName = () => lastSelectedCity === 'user location' ? cities[lastSelectedCity].data.city.name : capitalizeFirstLetter(lastSelectedCity)
+  const cityName = () => lastSelectedCity === 'my location' ? cities[lastSelectedCity].data.city.name : capitalizeFirstLetter(lastSelectedCity)
 
   return (
     <Paper

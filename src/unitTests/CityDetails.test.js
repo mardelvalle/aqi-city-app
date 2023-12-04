@@ -17,7 +17,7 @@ const mockCities = {
     level: 'Good',
   },
   tokyo: {},
-  'user location': {
+  'my location': {
     data: {
       city: {
         name: 'User City',
@@ -42,7 +42,7 @@ describe('CityDetails component', () => {
     render(
       <CityDetails
         cities={mockCities}
-        lastSelectedCity="user location"
+        lastSelectedCity="my location"
         loading={false}
       />
     )
@@ -54,7 +54,7 @@ describe('CityDetails component', () => {
     expect(screen.getByText(/December/)).toBeInTheDocument()
   })
 
-    test('renders configured city details', () => {
+    test('renders default configured city details', () => {
     render(
       <CityDetails
         cities={mockCities}
@@ -68,22 +68,6 @@ describe('CityDetails component', () => {
     expect(screen.getByLabelText(/green/)).toBeInTheDocument()
     expect(screen.getByText(/Good/)).toBeInTheDocument()
     expect(screen.getByText(/November/)).toBeInTheDocument()
-  })
-
-  test('renders user city details', () => {
-    render(
-      <CityDetails
-        cities={mockCities}
-        lastSelectedCity="user location"
-        loading={false}
-      />
-    )
-
-    expect(screen.getByText('User City')).toBeInTheDocument()
-    expect(screen.getByText(/42/)).toBeInTheDocument()
-    expect(screen.getByLabelText(/yellow/)).toBeInTheDocument()
-    expect(screen.getByText(/Moderate/)).toBeInTheDocument()
-    expect(screen.getByText(/December/)).toBeInTheDocument()
   })
 
   test('renders no data state', () => {

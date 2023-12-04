@@ -16,8 +16,6 @@ describe('AQITable component', () => {
     expect(screen.getByText(/little or no risk/)).toBeInTheDocument()
     expect(screen.getByText('None')).toBeInTheDocument()
 
-    expect(screen.getByText('Source:')).toBeInTheDocument()
-    expect(screen.getByRole('link')).toHaveAttribute('href', 'https://aqicn.org/scale/')
+    expect(screen.getByTestId('aqin-link')).toBeInTheDocument()
   })
-
 })

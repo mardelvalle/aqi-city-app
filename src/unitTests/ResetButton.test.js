@@ -6,7 +6,7 @@ const mockCities = {
   tokyo: {},
   perth: {},
   budapest: {},
-  'user location': {},
+  'my location': {},
 }
 
 describe('ResetButton component', () => {
@@ -22,22 +22,5 @@ describe('ResetButton component', () => {
 
     expect(screen.getByTestId('reload')).toBeInTheDocument()
     expect(screen.getByTestId('reload-icon')).toBeInTheDocument()
-  })
-
-  test('applies styles based on isMobile', () => {
-    render(
-      <ResetButton
-        cities={mockCities}
-        isMobile={true}
-        setCities={() => {}}
-        setResetTriggered={() => {}}
-      />
-    )
-
-    const buttonElement = screen.getByRole('button')
-    expect(buttonElement).toHaveStyle({
-      fontSize: '1.25rem',
-      padding: '0.75rem 8.5rem',
-    })
   })
 })

@@ -11,7 +11,7 @@ const mockTheme = {
 }
 
 describe('LocationButton component', () => {
-  test('renders button with correct text', () => {
+  test('renders button with correct text and is accessible', () => {
     render(
       <LocationButton
         city="tokyo"

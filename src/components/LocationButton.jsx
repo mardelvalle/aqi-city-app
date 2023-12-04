@@ -7,7 +7,7 @@ function LocationButton({city, fetchData, isMobile, lastSelectedCity, theme}) {
 
   return (
     <Button
-      data-testId={city.replace(/\s/g, '')}
+      data-testid={city.replace(/\s/g, '')}
       onClick={() => fetchData(city)}
       sx={{
         fontSize: isMobile ? '1.25rem' : 'inherit',

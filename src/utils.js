@@ -4,7 +4,6 @@ export const capitalizeFirstLetter = (string) => {
 
 export const formatISOTime = (isoTime) => {
   const options = {
-    weekday: 'long',
     year: 'numeric',
     month: 'long',
     day: 'numeric',

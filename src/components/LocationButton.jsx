@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Button } from '@mui/material'
-import { capitalizeFirstLetter } from './utils'
+import { capitalizeFirstLetter } from '../utils'
 
 function LocationButton({city, fetchData, isMobile, lastSelectedCity, theme}) {
 

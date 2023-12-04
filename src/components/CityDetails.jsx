@@ -2,14 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import CircleIcon from '@mui/icons-material/Circle'
 import { Box, Paper, Typography } from '@mui/material'
-import { capitalizeFirstLetter } from './utils'
-import { formatISOTime } from './utils'
+import { capitalizeFirstLetter } from '../utils'
+import { formatISOTime } from '../utils'
 
 
 function CityDetails({cities, lastSelectedCity, loading}) {
 
   return (
-    <Paper 
+    <Paper
+      data-testid="city-details" 
       sx={{ 
         margin: '2rem 1rem',
         minHeight: 200,
@@ -19,7 +20,7 @@ function CityDetails({cities, lastSelectedCity, loading}) {
       variant="elevation"
     >
       {loading || !lastSelectedCity ? (
-        <Typography variant="body1">Loading...</Typography>
+        <Typography data-testid="loading" variant="body1">Loading...</Typography>
       ) : (
         <>
           {cities[lastSelectedCity].data && (

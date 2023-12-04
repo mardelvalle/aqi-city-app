@@ -5,8 +5,8 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 
 
 function ResetButton({cities, isMobile, setCities, setResetTriggered}) {
+  
   const resetCities = async () => {
-
     Object.keys(cities).forEach((city) => {
       setCities((prevState) => ({
         ...prevState,
@@ -19,6 +19,7 @@ function ResetButton({cities, isMobile, setCities, setResetTriggered}) {
 
   return (
     <Button 
+      data-testid='reload'
       onClick={() => resetCities()} 
       sx={{ 
         backgroundColor: 'inherit', 
@@ -32,7 +33,7 @@ function ResetButton({cities, isMobile, setCities, setResetTriggered}) {
       variant="contained"
     >
       Reload
-      <RefreshIcon style={{ marginRight: 4 }} />
+      <RefreshIcon data-testid='reload-icon' style={{ marginRight: 4 }} />
     </Button>
   )
 }

@@ -5,7 +5,7 @@ import CityDetails from './CityDetails'
 import Header from './Header'
 import LocationButton from './LocationButton'
 import ResetButton from './ResetButton'
-import { getColor } from './utils'
+import { getColor } from '../utils'
 
 
 function App() {
@@ -21,12 +21,13 @@ function App() {
   const [resetTriggered, setResetTriggered] = useState(false)
   const [showAQITable, setAQITable] = useState(false)
 
-  const config = require('./config')
+  const config = require('../config')
   const apiToken = config.apiToken
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
   const fetchData = async (city) => {
+    console.log(cities)
     if (!cities[city].data) {
       const apiUrl = city === 'user location'
       ? `https://api.waqi.info/feed/here/?token=${apiToken}`
@@ -112,6 +113,7 @@ function App() {
         </Stack>
         <FormControlLabel
           control={<Switch checked={showAQITable} onChange={handleToggle} />}
+          data-testid="aqiToggle"
           label={<Typography variant="body2">Air Quality Index (AQI) Scale and Color Legend</Typography>}
         />
         {showAQITable && (

@@ -13,9 +13,19 @@ export const formatISOTime = (isoTime) => {
     second: 'numeric',
     timeZoneName: 'short',
   }
-  const formattedTime = new Intl.DateTimeFormat('en-US', options).format(new Date(isoTime))
   
-  return formattedTime
+  try {
+    const date = new Date(isoTime)
+
+    if (isNaN(date.getTime())) {
+      throw new Error('Invalid ISO time')
+    }
+
+    const formattedTime = new Intl.DateTimeFormat('en-US', options).format(date)
+    return formattedTime
+  } catch (error) {
+    return 'Invalid Date'
+  }
 }
 
 export const getColor = (number) => {

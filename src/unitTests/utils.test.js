@@ -1,7 +1,7 @@
 import {
   capitalizeFirstLetter,
   formatISOTime,
-  getColor,
+  getColorAndLevel,
 } from '../utils'
 
 describe('capitalizeFirstLetter function', () => {
@@ -31,25 +31,25 @@ describe('formatISOTime function', () => {
 
 })
 
-describe('getColor function', () => {
+describe('getColorAndLevel function', () => {
   test('returns correct color and level for AQI range 0-50', () => {
-    const result = getColor(25)
+    const result = getColorAndLevel(25)
     expect(result).toEqual({ aqi: 25, color: 'green', level: 'Good' })
   })
 
   test('returns correct color and level for AQI range 51-100', () => {
-    const result = getColor(75)
+    const result = getColorAndLevel(75)
     expect(result).toEqual({ aqi: 75, color: 'yellow', level: 'Moderate' })
   })
 
   test('returns correct color and level for AQI range 101-150', () => {
-    const result = getColor(125)
+    const result = getColorAndLevel(125)
     expect(result).toEqual({ aqi: 125, color: 'orange', level: 'Unhealthy for Sensative Groups' })
   })
 
 
   test('returns default values for invalid AQI', () => {
-    const result = getColor(-1)
+    const result = getColorAndLevel(-1)
     expect(result).toEqual({ color: 'brown', level: 'Hazardous' })
   })
 

@@ -5,7 +5,7 @@ import CityDetails from './CityDetails'
 import Header from './Header'
 import LocationButton from './LocationButton'
 import ResetButton from './ResetButton'
-import { getColor } from '../utils'
+import { getColorAndLevel } from '../utils'
 
 
 function App() {
@@ -42,7 +42,7 @@ function App() {
         }
 
         const data = await response.json()
-        const { color, level } = getColor(data.data.aqi)
+        const { color, level } = getColorAndLevel(data.data.aqi)
         setCities(prevState => ({
           ...prevState,
           [city]: { data: data.data, color, level }

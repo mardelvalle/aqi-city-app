@@ -30,13 +30,14 @@ You may also see any lint errors in the console.
 
 Run to check unit tests. 
 
+*For the following commands make sure that you are also running `npm start` in a separate tab
 ### `npx cypress run`
 
 Run to end to end tests.
 
-### `npx cypress open --e2e`
+### `npx cypress open`
 
-Opens a GUI way to run Cypress tests. You will be prompted to choose a browser to run the tests for and then given a list of Cypress test files (in this case only one) to run. As soon as you click on the file the tests will run.
+Opens a GUI way to run Cypress tests. You will be prompted to choose a type of testing. Choose E2e. And then prompted to choose a browser to run the tests for and then given a list of Cypress test files (in this case only one) to run. As soon as you click on the file the tests will run.
 
 ## Learn More
 

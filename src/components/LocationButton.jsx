@@ -11,7 +11,7 @@ function LocationButton({city, fetchData, isMobile, lastSelectedCity, theme}) {
       onClick={() => fetchData(city)}
       sx={{
         fontSize: isMobile ? '1.25rem' : 'inherit',
-        padding: isMobile ? '0.75rem 8.5rem' : '0.5rem',
+        padding: isMobile ? '0.75rem 6rem' : '0.5rem',
         backgroundColor: lastSelectedCity === city ? theme.palette.primary.main : 'inherit',
         color: lastSelectedCity === city ? 'white' : 'inherit',
         '&:hover': {

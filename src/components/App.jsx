@@ -111,9 +111,19 @@ function App() {
           />
         </Stack>
         <FormControlLabel
-          control={<Switch checked={showAQITable} data-testid="aqi-scale-switch" onChange={handleToggle} />}
+          control={
+            <Switch 
+              checked={showAQITable} 
+              data-testid="aqi-scale-switch" 
+              onChange={handleToggle} 
+            />
+          }
           data-testid="aqiToggle"
-          label={<Typography variant="body2">Air Quality Index (AQI) Scale and Color Legend</Typography>}
+          label={
+            <Typography variant="body2">
+              Air Quality Index (AQI) Scale and Color Legend
+            </Typography>
+          }
         />
         {showAQITable && (
           <AQITable/>

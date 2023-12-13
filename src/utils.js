@@ -27,7 +27,7 @@ export const formatISOTime = (isoTime) => {
   }
 }
 
-export const getColor = (number) => {
+export const getColorAndLevel = (number) => {
     if (number >= 0 && number <= 50) {
         return { aqi: number, color: 'green', level: 'Good' }
     } else if (number >= 51 && number <= 100) {

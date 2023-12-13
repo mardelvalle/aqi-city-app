@@ -16,7 +16,7 @@ function CityDetails({cities, lastSelectedCity, loading}) {
       sx={{ 
         margin: '2rem 1rem',
         minHeight: 200,
-        minWidth: 375,
+        minWidth: 325,
         padding: '1.5rem'
       }}
       variant="elevation"
@@ -25,7 +25,7 @@ function CityDetails({cities, lastSelectedCity, loading}) {
         <Typography data-testid="loading" variant="body1">Loading</Typography>
       ) : (
         <>
-          {cities[lastSelectedCity].data && (
+          {cities[lastSelectedCity] && cities[lastSelectedCity].data && (
             <>
               <Typography component="h2" data-testid="city-name" variant="h4">{cityName()}</Typography>                    
               <Box sx={{ marginY: '1rem' }}>

@@ -5,7 +5,7 @@ import CityDetails from './CityDetails'
 import Header from './Header'
 import LocationButton from './LocationButton'
 import ResetButton from './ResetButton'
-import { getColor } from '../utils'
+import { getColorAndLevel } from '../utils'
 
 
 function App() {
@@ -42,7 +42,7 @@ function App() {
         }
 
         const data = await response.json()
-        const { color, level } = getColor(data.data.aqi)
+        const { color, level } = getColorAndLevel(data.data.aqi)
         setCities(prevState => ({
           ...prevState,
           [city]: { data: data.data, color, level }
@@ -111,9 +111,19 @@ function App() {
           />
         </Stack>
         <FormControlLabel
-          control={<Switch checked={showAQITable} data-testid="aqi-scale-switch" onChange={handleToggle} />}
+          control={
+            <Switch 
+              checked={showAQITable} 
+              data-testid="aqi-scale-switch" 
+              onChange={handleToggle} 
+            />
+          }
           data-testid="aqiToggle"
-          label={<Typography variant="body2">Air Quality Index (AQI) Scale and Color Legend</Typography>}
+          label={
+            <Typography variant="body2">
+              Air Quality Index (AQI) Scale and Color Legend
+            </Typography>
+          }
         />
         {showAQITable && (
           <AQITable/>
